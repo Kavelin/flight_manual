@@ -1,15 +1,16 @@
-# Getting Started with ArduPilot, DroneKit, and Mission Planner (SITL)
+# Getting Started with ArduPilot, DroneKit, Mission Planner (SITL), and Unreal Engine
 
-This guide walks you through setting up a Python environment, installing DroneKit, running ArduPilot SITL through Mission Planner, and testing vehicle control using Python scripts.
-
-> [!NOTE]
-> We'll eventually create a clean repo containing the required .py files and reqs
-
-> The original documents for DroneKit are [here](https://dronekit.netlify.app/). They're outdated, but the code works fine if you just write with Python3 syntax.
+This guide walks you through setting up a Python environment, installing DroneKit, running ArduPilot SITL through Mission Planner, testing vehicle control using Python scripts, and setting up the Unreal Engine environment to set up the 3d app.
 
 ---
 
-## 1. Create a New Python Virtual Environment
+Make sure you have these installed:
+- Python (https://www.python.org/downloads/)
+- Unreal Engine (install through epic games launcher https://www.unrealengine.com/en-US/download)
+- Mission Planner (https://ardupilot.org/planner/docs/mission-planner-installation.html)
+
+
+## Create a New Python Virtual Environment
 
 Open **Windows CMD** and run:
 
@@ -19,7 +20,7 @@ python -m venv dronekit3
 
 ---
 
-## 2. Activate the Environment
+## Activate the Environment
 
 ```cmd
 cd dronekit3
@@ -34,42 +35,21 @@ You should now see the environment name prefixed in your terminal, e.g.:
 
 ---
 
-## 3. Install Required Python Packages
+## Install Required Python Packages
 
 ```cmd
 pip install dronekit pymavlink future pyyaml
 ```
 
+## Put the python files from [dronekit_setup](dronekit_setup) in dronekit3
+
+In file explorer, copy the files from the dronekit_setup folder into the newly created dronekit3 folder.
+
 ---
 
-## 4. Patch DroneKit Deprecation Issue
+## Patch DroneKit Deprecation Issue
 
-DroneKit currently references a deprecated Python class. Apply this quick patch:
-
-### Create the patch file
-
-```cmd
-edit dronekitpatch.py
-```
-
-Paste the following into the editor:
-
-```python
-"""
-This script modifies the DroneKit __init__.py file to replace deprecated
-'collections.MutableMapping' with 'collections.abc.MutableMapping'.
-"""
-from pathlib import Path
-
-p = Path('Lib/site-packages/dronekit/__init__.py')
-data = p.read_text()
-data = data.replace('collections.MutableMapping', 'collections.abc.MutableMapping')
-
-p.write_text(data)
-print("Dronekit __init__.py patched successfully.")
-```
-
-Save (Ctrl+S) and exit (Ctrl+Q).
+DroneKit currently references a deprecated Python class. 
 
 ### Run the patch
 
@@ -77,9 +57,7 @@ Save (Ctrl+S) and exit (Ctrl+Q).
 python dronekitpatch.py
 ```
 
----
-
-## 5. Test DroneKit Installation
+## Quickly Test DroneKit Installation
 
 With the virtual environment still active:
 
@@ -100,15 +78,8 @@ If no errors appear, DroneKit is installed correctly.
 
 ---
 
-## 6. Install Mission Planner
 
-Download and install Mission Planner:
-
-**https://ardupilot.org/planner/docs/mission-planner-installation.html**
-
----
-
-## 7. Launch SITL in Mission Planner
+## Launch SITL in Mission Planner
 
 1. Open **Mission Planner** from the Windows Start Menu.
 2. Click **Simulation**.
@@ -167,9 +138,11 @@ Back in Unreal Editor, they should appear in your content drawer.
 
 Drag bp_pythonPawn and bp_tcpRelay into the level.
 
-We have to fix a few things in the blueprints for it to work.
+### Fixing the blueprints
 
-# Press Edit bp_pythonPawn in the outliner on the right
+# Edit bp_pythonPawn
+
+Press Edit bp_pythonPawn in the outliner on the right
 
 Open Class Settings and look to the right of the window.
 
@@ -187,7 +160,7 @@ The class under Select Class needs to be bp_tcpRelay.
 
 Now, press Compile at the top left of the window. It should be successful. Close the window.
 
-# Press Edit bp_tcpRelay
+# Edit bp_tcpRelay
 
 Same as bp_pythonPawn, add the Bpi Relay interface in Class Settings
 
@@ -199,9 +172,9 @@ Click compile and close the window.
 
 
 
+### Connecting Unreal Engine with the python files
 
-
-Put both dronekit_unreal.py and tcp_relay.py in your dronekit13 folder.
+Make sure both dronekit_unreal.py and tcp_relay.py are in your dronekit13 folder.
 
 Run 
 
@@ -228,7 +201,7 @@ Connected. Client address: ('127.0.0.1', 58057)
 
 ---
 
-## 9. Manual Arm and Takeoff in Mission Planner
+### Manual Arm and Takeoff in Mission Planner
 
 1. In Mission Planner **Actions** panel, change the Mode dropdown to **GUIDED** and then click **Arm/Disarm**.
 
@@ -240,6 +213,7 @@ Connected. Client address: ('127.0.0.1', 58057)
 2. Right‑click the map → **Takeoff** → enter altitude.
 
 ---
+
 
 
 After entering an altitude, the pythonPawn in the game in Unreal Engine should be in the air.
