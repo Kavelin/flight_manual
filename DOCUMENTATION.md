@@ -179,7 +179,7 @@ Make sure both dronekit_unreal.py and tcp_relay.py are in your dronekit13 folder
 Run 
 
 ```
-python dronekit13.py
+python dronekit_unreal.py
 
 ```
 
