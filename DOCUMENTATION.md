@@ -2,8 +2,7 @@
 
 This guide walks you through setting up a Python environment, installing DroneKit, running ArduPilot SITL through Mission Planner, testing vehicle control using Python scripts, and setting up the Unreal Engine environment to set up the 3d app.
 
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=eS9KblDo3mw" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
+[Video Tutorial](https://www.youtube.com/watch?v=eS9KblDo3mw)
 
 ---
 
